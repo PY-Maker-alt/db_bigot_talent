@@ -12,9 +12,22 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard') || request()->routeIs('admin.dashboard') || request()->routeIs('siswa.dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+
+                    <!-- MENU KHUSUS ADMIN -->
+                    @if(Auth::user()->role === 'admin')
+                        <x-nav-link :href="route('admin.lomba')" :active="request()->routeIs('admin.lomba')">
+                            Kelola Lomba
+                        </x-nav-link>
+                        <x-nav-link :href="route('admin.siswa')" :active="request()->routeIs('admin.siswa')">
+                            Kelola Siswa
+                        </x-nav-link>
+                        <x-nav-link :href="route('admin.status')" :active="request()->routeIs('admin.status')">
+                            Manajemen Status
+                        </x-nav-link>
+                    @endif
                 </div>
             </div>
 
@@ -70,6 +83,19 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+
+            <!-- MENU KHUSUS ADMIN (RESPONSIVE) -->
+            @if(Auth::user()->role === 'admin')
+                <x-responsive-nav-link :href="route('admin.lomba')" :active="request()->routeIs('admin.lomba')">
+                    Kelola Lomba
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('admin.siswa')" :active="request()->routeIs('admin.siswa')">
+                    Kelola Siswa
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('admin.status')" :active="request()->routeIs('admin.status')">
+                    Manajemen Status
+                </x-responsive-nav-link>
+            @endif
         </div>
 
         <!-- Responsive Settings Options -->

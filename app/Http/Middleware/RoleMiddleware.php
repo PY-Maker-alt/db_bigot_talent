@@ -4,11 +4,11 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Auth; // Jangan lupa baris ini!
 
 class RoleMiddleware
 {
-    public function handle(Request $request, Closure $next, string $role)
+    public function handle(Request $request, Closure $next, $role)
     {
         // 1. Cek apakah pengguna SUDAH LOGIN?
         // 2. Cek apakah ROLE pengguna SAMA DENGAN role yang diminta halaman?

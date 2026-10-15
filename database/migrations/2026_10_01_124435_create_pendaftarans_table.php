@@ -11,10 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pendaftarans', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
+
+Schema::create('pendaftarans', function (Blueprint $table) {
+    $table->id();
+
+    $table->foreignId('user_id')->constrained()->onDelete('cascade');
+    $table->foreignId('lomba_id')->constrained()->onDelete('cascade');
+    $table->string('status')->default('Dokumen dalam Tinjauan');
+
+    $table->timestamps();
+});
+
     }
 
     /**

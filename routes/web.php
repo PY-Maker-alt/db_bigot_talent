@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\SiswaController;
+use Illuminate\Support\Facades\Auth; // Untuk mengecek user yang login
+use App\Http\Controllers\AdminController; // Memanggil Controller Admin
+use App\Http\Controllers\SiswaController; // Memanggil Controller Siswa
 use App\Http\Controllers\ProfileController;
 
 // 1. Rute Halaman Depan (Welcome Page)
@@ -21,14 +21,23 @@ Route::get('/dashboard', function () {
 
 // 3. JALUR KHUSUS ADMIN (Dijaga oleh Middleware Role:admin)
 Route::middleware(['auth', 'role:admin'])->group(function () {
-    // Halaman Dashboard Admin
+    // Halaman Dashboard Utama Admin
     Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
     
-    // Proses Simpan Lomba Baru
+    // --- HALAMAN MENU BARU ---
+    Route::get('/admin/kelola-lomba', [AdminController::class, 'kelolaLomba'])->name('admin.lomba');
+    Route::get('/admin/kelola-siswa', [AdminController::class, 'kelolaSiswa'])->name('admin.siswa');
+    Route::get('/admin/kelola-status', [AdminController::class, 'kelolaStatus'])->name('admin.status');
+
+    // --- PROSES DATA & CRUD ---
     Route::post('/admin/lomba', [AdminController::class, 'storeLomba'])->name('admin.lomba.store');
-    
-    // Proses Update Status Pendaftaran
     Route::post('/admin/pendaftaran/{id}/status', [AdminController::class, 'updateStatus'])->name('admin.status.update');
+
+    // Rute CRUD Akun Siswa
+    Route::post('/admin/siswa', [AdminController::class, 'storeSiswa'])->name('admin.siswa.store');
+    Route::get('/admin/siswa/{id}/edit', [AdminController::class, 'editSiswa'])->name('admin.siswa.edit');
+    Route::put('/admin/siswa/{id}', [AdminController::class, 'updateSiswa'])->name('admin.siswa.update');
+    Route::delete('/admin/siswa/{id}', [AdminController::class, 'destroySiswa'])->name('admin.siswa.destroy');
 });
 
 // 4. JALUR KHUSUS SISWA (Dijaga oleh Middleware Role:siswa)
@@ -40,7 +49,7 @@ Route::middleware(['auth', 'role:siswa'])->group(function () {
     Route::post('/siswa/daftar', [SiswaController::class, 'daftarLomba'])->name('siswa.daftar');
 });
 
-// 5. Rute Edit Profil (Bawaan Breeze)
+// Rute untuk mengedit Profil (Bawaan Breeze)
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
